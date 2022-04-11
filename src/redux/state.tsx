@@ -1,3 +1,5 @@
+import {profileReducer} from "./reducerProfilePage";
+import {dialogsReducer} from "./reducerDialogsPage";
 
 export type PostsType = {
     id: number
@@ -19,6 +21,7 @@ export type ProfilePageType = {
 export type DialogsPageType = {
     dialogs: Array<DialogsType>
     messages: Array<MessagesType>
+    newMessageText: string
 }
 export type RoteStateType = {
     dialogsPage: DialogsPageType
@@ -28,10 +31,42 @@ export type RoteStateType = {
 export type StoreType = {
     _state: RoteStateType
     _callSubscriber: () => void
-    updateNewPostText: (newText: string) => void
-    addPost: (postMessage: string) => void
     subscribe: (observer: () => void) => void
     getState: () => RoteStateType
+    dispatch: (action: ActionsType) => void
+
+
+}
+
+export type ActionsType = ReturnType<typeof addPostAC>
+    | ReturnType<typeof updateNewPostTextAC>
+    | ReturnType<typeof sendMessageAC>
+    | ReturnType<typeof updateNewMessageTextAC>
+
+export const addPostAC = (postMessage: string) => {
+    return {
+        type: 'ADD_POST',
+        newPostText: postMessage
+    } as const
+}
+export const updateNewPostTextAC = (newText: string) => {
+    return {
+        type: 'UPDATE_NEW_POST_TEXT',
+        newText:newText
+    } as const
+}
+
+export const sendMessageAC = (messagesText:string) => {
+    return {
+        type: 'SEND_MESSAGE',
+        messagesText: messagesText
+    } as const
+}
+export const updateNewMessageTextAC = (newBodyText: string) => {
+    return {
+        type: 'UPDATE_NEW_MESSAGE_TEXT',
+        newBodyText:newBodyText
+    } as const
 }
 
 export const store: StoreType = {
@@ -51,6 +86,7 @@ export const store: StoreType = {
                 {id: 4, message: 'Yo Yo Yo'},
                 {id: 5, message: 'Nuroc'},
             ],
+            newMessageText: ''
         },
         profilePage: {
             posts: [
@@ -66,25 +102,18 @@ export const store: StoreType = {
     _callSubscriber (){
         console.log('state changed');
     },
-    updateNewPostText(newText: string) {
-        this._state.profilePage.newPostText = newText
-        this._callSubscriber()
-    },
-    addPost() {
-        let newPost = {
-            id: 6,
-            message: this._state.profilePage.newPostText,
-            likeCount: 0,
-        };
-        this._state.profilePage.posts.push(newPost);
-        this._state.profilePage.newPostText = '';
-        this._callSubscriber()
-    },
+
     subscribe(observer) {
         this._callSubscriber = observer;
     },
     getState() {
         return this._state;
+    },
+
+    dispatch(action) {
+        this._state.profilePage = profileReducer(this._state.profilePage, action);
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
+        this._callSubscriber();
     },
 };
 
