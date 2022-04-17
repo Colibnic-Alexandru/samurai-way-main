@@ -11,6 +11,7 @@ import {ActionsType, RoteStateType} from "./redux/state";
 type PropsType = {
     state: RoteStateType
     dispatch:(action:ActionsType)=>void
+    store: any
 }
 
 function App(props: PropsType) {

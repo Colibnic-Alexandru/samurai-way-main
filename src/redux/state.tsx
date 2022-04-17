@@ -86,7 +86,7 @@ export const store: StoreType = {
                 {id: 4, message: 'Yo Yo Yo'},
                 {id: 5, message: 'Nuroc'},
             ],
-            newMessageText: ''
+            newMessageText: '',
         },
         profilePage: {
             posts: [
