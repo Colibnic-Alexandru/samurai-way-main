@@ -2,28 +2,29 @@ import React, {ChangeEvent} from 'react';
 import s from './Dialogs.module.css';
 import {DialogItem} from './DialogItem/DialogItem';
 import {Messages} from "./Messages/Messages";
-import {
-    ActionsType, DialogsPageType, sendMessageAC, updateNewMessageTextAC,
-} from "../../redux/state";
+import {DialogsType, MessagesType} from "../../redux/reducerDialogsPage";
 
 type DialogsPropsType = {
-    dataForDialogs: DialogsPageType
-    dispatch: (action: ActionsType) => void
+    dialogs: Array<DialogsType>
+    messages: Array<MessagesType>
+    newMessageText: string
+    sendMessage: (newMessageText: string) => void
+    updateNewMessageText: (newMessageText: string) => void
 }
 
-export const Dialogs = (props: DialogsPropsType) => {
+export const Dialogs = (props:DialogsPropsType) => {
 
-    const dialogsElements = props.dataForDialogs.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>)
+    const dialogsElements = props.dialogs.map(d => <DialogItem name={d.name} id={d.id}/>)
 
-    const messagesElements = props.dataForDialogs.messages.map(m => <Messages message={m.message} id={m.id}/>)
+    const messagesElements = props.messages.map(m => <Messages message={m.message} id={m.id}/>)
 
     const onClickHandler = () => {
-        props.dispatch(sendMessageAC(''))
+        props.sendMessage(props.newMessageText)
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const text = e.currentTarget.value
-        props.dispatch(updateNewMessageTextAC(text))
+        props.updateNewMessageText(text)
     }
 
     return (
@@ -31,7 +32,7 @@ export const Dialogs = (props: DialogsPropsType) => {
             <div className={s.dialogsItems}>{dialogsElements}</div>
             <div className={s.messages}>{messagesElements}</div>
             <div>
-                <div><textarea value={props.dataForDialogs.newMessageText}
+                <div><textarea value={props.newMessageText}
                                placeholder='Enter message'
                                onChange={onChangeHandler}
                 /></div>
