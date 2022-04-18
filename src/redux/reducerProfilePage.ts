@@ -7,11 +7,6 @@ export type PostsType = {
 
 export type newPostTextType = string
 
-export type ProfilePageType = {
-    posts: Array<PostsType>
-    newPostText: newPostTextType
-}
-
 export type InitialStateType = typeof  initialState
 
 const initialState = {
