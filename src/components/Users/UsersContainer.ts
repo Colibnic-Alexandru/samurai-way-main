@@ -1,28 +1,43 @@
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/reduxStore";
-import {followAC, InitialStateType, setUsersAC, unfollowAC, UserType} from "../../redux/reducerUsers";
+import {
+    followAC,
+    setCurrentPageAC,
+    setUsersAC,
+    setUsersTotalCountAC,
+    unfollowAC,
+    UserType
+} from "../../redux/reducerUsers";
 import {Dispatch} from "redux";
 import {Users} from "./Users";
 
 
-type MapStateToPropsType = {
-    usersPage: InitialStateType
-}
+export type MapStateToPropsType = {
+    users: Array<UserType>
+    pageSize: number,
+    totalUsersCount: number,
+    currentPage: number,
+};
 
 
-type MapDispatchToPropsType = {
-    setUsers: (users: Array<UserType>) => void
-    follow: (userId: number) => void
-    unfollow: (userId: number) => void
-}
+export type MapDispatchToPropsType = {
+    setUsers: (users: Array<UserType>) => void,
+    follow: (userId: number) => void,
+    unfollow: (userId: number) => void,
+    setCurrentPage: (currentPage: number) => void,
+    setUsersTotalCount:(totalUsersCount:number) => void
+};
 
-export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType
+export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType;
 
 const mapStateToProps = (state: AppStateType):MapStateToPropsType => {
     return {
-        usersPage: state.usersPage
+        users: state.usersPage.users,
+        pageSize: state.usersPage.pageSize,
+        totalUsersCount: state.usersPage.totalUsersCount,
+        currentPage: state.usersPage.currentPage,
     }
-}
+};
 
 const mapDispatchToProps = (dispatch: Dispatch):MapDispatchToPropsType => {
     return {
@@ -35,7 +50,13 @@ const mapDispatchToProps = (dispatch: Dispatch):MapDispatchToPropsType => {
         setUsers: (users: Array<UserType>) => {
             dispatch(setUsersAC(users))
         },
+        setCurrentPage: (pageNumber: number) => {
+            dispatch(setCurrentPageAC(pageNumber))
+        },
+        setUsersTotalCount: (totalUsersCount:number) =>{
+            dispatch(setUsersTotalCountAC(totalUsersCount))
+        },
     }
-}
+};
 
-export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(Users);
+export const UsersContainer = connect<MapStateToPropsType,MapDispatchToPropsType,{},AppStateType>(mapStateToProps, mapDispatchToProps)(Users);
