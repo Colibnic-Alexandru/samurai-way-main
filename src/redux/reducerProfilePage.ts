@@ -5,6 +5,30 @@ export type PostsType = {
     likeCount: number
 }
 
+
+
+
+export type ProfilePageType = {
+    userId: number
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    fullName: string
+    contacts:{
+        github: string
+        vk: string
+        facebook: string
+        instagram: string
+        twitter: string
+        website: string
+        youtube: string
+        mainLink: string
+    }
+    photos: {
+        small: string
+        large: string
+    } | null
+}
+
 export type newPostTextType = string
 
 export type InitialStateType = typeof  initialState
@@ -17,7 +41,8 @@ const initialState = {
         {id: 4, message: 'Hi hwo are you?', likeCount: 15},
         {id: 5, message: 'Hello', likeCount: 75},
     ] as Array<PostsType>,
-    newPostText: "" as newPostTextType
+    newPostText: "" as newPostTextType,
+    profile: null as ProfilePageType | null
 };
 
 
@@ -40,12 +65,17 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
                 newPostText: action.newText
             };
         }
+        case "SET_USER_PROFILE":
+            return {
+                ...state,
+                profile: action.profile
+            };
         default:
             return state;
     }
 }
 
-type ActionProfileType = ReturnType<typeof addPostAC> | ReturnType<typeof updateNewPostTextAC>
+type ActionProfileType = ReturnType<typeof addPostAC> | ReturnType<typeof updateNewPostTextAC> |ReturnType<typeof setUserProfile>
 
 export const addPostAC = (postMessage: string) => {
     return {
@@ -57,5 +87,12 @@ export const updateNewPostTextAC = (newText: string) => {
     return {
         type: 'UPDATE_NEW_POST_TEXT',
         newText:newText
+    } as const
+}
+
+export const setUserProfile = (profile: ProfilePageType) => {
+    return {
+        type: 'SET_USER_PROFILE',
+        profile: profile
     } as const
 }
