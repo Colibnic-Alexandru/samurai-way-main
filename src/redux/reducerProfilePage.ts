@@ -1,11 +1,12 @@
+import {usersAPI} from "../api/api";
+import {AppStateType} from "./reduxStore";
+import {ThunkAction, ThunkDispatch} from "redux-thunk";
 
 export type PostsType = {
     id: number
     message: string
     likeCount: number
 }
-
-
 
 
 export type ProfilePageType = {
@@ -89,10 +90,21 @@ export const updateNewPostTextAC = (newText: string) => {
         newText:newText
     } as const
 }
-
-export const setUserProfile = (profile: ProfilePageType) => {
+const setUserProfile = (profile: ProfilePageType) => {
     return {
         type: 'SET_USER_PROFILE',
         profile: profile
     } as const
+}
+
+export type ThunkType = ThunkAction<void, AppStateType, unknown, ActionProfileType>
+export type ThunkDispatchType = ThunkDispatch<AppStateType, unknown, ActionProfileType>
+
+export const ThunkSetUserProfile = (userId: number):ThunkType => {
+    return (dispatch:ThunkDispatchType ) => {
+        usersAPI.getProfile(userId)
+            .then(response => {
+                dispatch(setUserProfile(response.data));
+            })
+    }
 }
