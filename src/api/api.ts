@@ -14,15 +14,11 @@ export const usersAPI = {
             .then(response => {
                 return response.data;
             });
-    }
-}
-
-
-export const followAPI = {
+    },
     follow(userId: number) {
-        return instance.post(`follow/${userId} `)
-            .then(response => {
-                return response.data;
-            })
+        return instance.post(`follow/${userId}`)
+    },
+    unfollow(userId: number) {
+        return instance.delete(`follow/${userId}`)
     }
 }
