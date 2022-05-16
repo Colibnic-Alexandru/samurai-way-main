@@ -1,5 +1,4 @@
 import {usersAPI} from "../api/api";
-import {Dispatch} from "redux";
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {AppStateType} from "./reduxStore";
 
@@ -165,6 +164,7 @@ export const getUsersThunkCreator = (currentPage: number, pageSize: number):Thun
                 dispatch(toggleIsFetching(false));
                 dispatch(setUsers(data.items));
                 dispatch(setUsersTotalCount(data.totalCount));
+                dispatch(setCurrentPage(currentPage))
             })
     }
 }

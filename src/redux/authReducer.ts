@@ -10,6 +10,7 @@ export type InitialStateType = {
     }
     resultCode: number
     messages: Array<string>
+    isAuth: boolean
 }
 
 const initialState: InitialStateType = {
@@ -19,7 +20,8 @@ const initialState: InitialStateType = {
         login: ''
     },
     resultCode: 0,
-    messages: []
+    messages: [],
+    isAuth: false
 }
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionUsersType): InitialStateType => {
@@ -29,7 +31,8 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
                 ...state,
                 ...action.payload,
                 resultCode: 0,
-                messages: []
+                messages: [],
+                isAuth: true
             }
         default:
             return state
@@ -58,6 +61,7 @@ export const getAuthUserData = (): AuthThunkType => {
                     let {id, email, login} = response.data.data
                     dispatch(setUserData({id, email, login}))
                 }
+
             })
     }
 }
