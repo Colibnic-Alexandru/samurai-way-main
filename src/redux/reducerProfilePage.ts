@@ -30,8 +30,6 @@ export type ProfilePageType = {
     } | null
 }
 
-export type newPostTextType = string
-
 export type InitialStateType = typeof initialState
 
 const initialState = {
@@ -42,9 +40,8 @@ const initialState = {
         {id: 4, message: 'Hi hwo are you?', likeCount: 15},
         {id: 5, message: 'Hello', likeCount: 75},
     ] as Array<PostsType>,
-    newPostText: "" as newPostTextType,
     profile: null as ProfilePageType | null,
-    status: "" as string
+    status: "" as string,
 };
 
 
@@ -53,20 +50,13 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
         case 'ADD_POST':
             let newPost = {
                 id: 6,
-                message: state.newPostText,
+                message: action.messagesText,
                 likeCount: 0,
             };
             return {
                 ...state,
                 posts: [...state.posts, newPost],
-                newPostText: ''
             };
-        case 'UPDATE_NEW_POST_TEXT': {
-            return {
-                ...state,
-                newPostText: action.newText
-            };
-        }
         case "SET_USER_PROFILE":
             return {
                 ...state,
@@ -83,20 +73,13 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
 }
 
 type ActionProfileType = ReturnType<typeof addPostAC>
-    | ReturnType<typeof updateNewPostTextAC>
     | ReturnType<typeof setUserProfile>
     | ReturnType<typeof setStatus>
 
-export const addPostAC = (postMessage: string) => {
+export const addPostAC = (newPostText: string) => {
     return {
         type: 'ADD_POST',
-        newPostText: postMessage
-    } as const
-}
-export const updateNewPostTextAC = (newText: string) => {
-    return {
-        type: 'UPDATE_NEW_POST_TEXT',
-        newText: newText
+        messagesText: newPostText,
     } as const
 }
 const setUserProfile = (profile: ProfilePageType) => {
@@ -125,7 +108,7 @@ export const ThunkSetUserProfile = (userId: number): ThunkType => {
     }
 }
 
-export const ThunkSetStatus = (status:string): ThunkType => {
+export const ThunkSetStatus = (status: string): ThunkType => {
     return (dispatch: ThunkDispatchType) => {
         profileAPI.getStatus(status)
             .then(response => {

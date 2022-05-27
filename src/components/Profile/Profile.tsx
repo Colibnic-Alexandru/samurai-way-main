@@ -11,13 +11,12 @@ type PropsType = {
 }
 
 export const Profile = (props: PropsType) => {
-    console.log(props)
     return (
         <div className={s.content}>
             <ProfileInfo profile={props.profile}
                          status={props.status}
                          updateStatus={props.updateStatus} />
-            <MyPostsContainer/>
+            <MyPostsContainer />
         </div>
     )
 }
