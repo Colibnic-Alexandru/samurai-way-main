@@ -8,11 +8,11 @@ type PropsType = {
     profile: ProfilePageType
 }
 
-export const Profile = (props:PropsType) => {
+export const Profile = (props: PropsType) => {
     return (
         <div className={s.content}>
             <ProfileInfo profile={props.profile}/>
-            <MyPostsContainer />
+            <MyPostsContainer/>
         </div>
     )
 }

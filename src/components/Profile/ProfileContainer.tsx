@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ComponentType} from 'react';
 import s from './Profile.module.css';
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
@@ -6,6 +6,7 @@ import {ProfilePageType, ThunkSetUserProfile} from "../../redux/reducerProfilePa
 import {AppStateType} from "../../redux/reduxStore";
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 
 type PathParamsType = {
@@ -14,7 +15,6 @@ type PathParamsType = {
 
 type MapStatePropsType = {
     profile: ProfilePageType
-    isAuth: boolean
 }
 
 type MapDispatchPropsType = {
@@ -47,11 +47,11 @@ class ProfileContainer extends React.Component<PropsType> {
 
 const mapStateToProps = (state:AppStateType):MapStatePropsType => ({
     profile: state.profilePage.profile,
-    isAuth: state.auth.isAuth
 }) as MapStatePropsType;
 
-const WithUrlDataContainerComponent = withRouter(ProfileContainer);
 
-
-export default withAuthRedirect( connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>
-(mapStateToProps,{ThunkSetUserProfile})(WithUrlDataContainerComponent));
+export  default compose<ComponentType>(
+    connect(mapStateToProps, {ThunkSetUserProfile}),
+    withRouter,
+    withAuthRedirect
+)(ProfileContainer);
