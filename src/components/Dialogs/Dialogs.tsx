@@ -3,7 +3,7 @@ import s from './Dialogs.module.css';
 import {DialogItem} from './DialogItem/DialogItem';
 import {Messages} from "./Messages/Messages";
 import {DialogsType, MessagesType} from "../../redux/reducerDialogsPage";
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
+import {AddMessageReduxForm, FormDataType} from "./AddMessageForm/AddMessageForm";
 
 type DialogsPropsType = {
     dialogs: Array<DialogsType>
@@ -11,9 +11,6 @@ type DialogsPropsType = {
     sendMessage: (newMessageText: string) => void
 }
 
-type FormDataType = {
-    newMessageText: string
-}
 
 export const Dialogs = (props: DialogsPropsType) => {
 
@@ -34,16 +31,3 @@ export const Dialogs = (props: DialogsPropsType) => {
     );
 };
 
-
-const AddMessageForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
-    return (
-        <form onSubmit={props.handleSubmit}>
-            <div><Field component={'textarea'} name={'newMessageText'} placeholder={'Enter message'}/></div>
-            <div>
-                <button>Send</button>
-            </div>
-        </form>
-    )
-}
-
-const AddMessageReduxForm = reduxForm<FormDataType>({form: 'dialogAddMessageForm'})(AddMessageForm)
