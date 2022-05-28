@@ -7,3 +7,10 @@
 {
   color: red;
 }
+
+.formSampleError
+{
+  border: 1px solid red;
+  color: #c54747;
+  padding: 5px;
+}
