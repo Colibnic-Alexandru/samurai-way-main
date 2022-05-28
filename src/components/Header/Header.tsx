@@ -11,7 +11,7 @@ type PropsType = {
 }
 
 export const Header = (props: PropsType) => {
-    console.log(props.login)
+    // console.log(props.login)
     return <header className={s.header}>
         <img src='https://weblinks.ru/wp-content/uploads/2021/02/fffatewx.jpeg' alt={''}/>
 

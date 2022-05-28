@@ -48,23 +48,20 @@ const setUserData = (data: { id: number, email: string, login: string, isAuth: b
     payload: {
         data
     }
-})
+} as const)
 
 
-export type AuthThunkType = ThunkAction<void, AppStateType, unknown, ActionUsersType>
+export type AuthThunkType = ThunkAction<any, AppStateType, unknown, ActionUsersType>
 export type ThunkDispatchType = ThunkDispatch<AppStateType, unknown, ActionUsersType>
 
-export const getAuthUserData = (): AuthThunkType => {
-    return (dispatch: ThunkDispatchType) => {
-        authAPI.me()
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    let {id, email, login} = response.data.data
-                    dispatch(setUserData({id, email, login, isAuth: true}))
-                }
-
-            })
-    }
+export const getAuthUserData = (): AuthThunkType => (dispatch: ThunkDispatchType) => {
+    return authAPI.me()
+        .then(response => {
+            if (response.data.resultCode === 0) {
+                let {id, email, login} = response.data.data
+                dispatch(setUserData({id, email, login, isAuth: true}))
+            }
+        })
 }
 
 export const login = (email: string, password: string, rememberMe: boolean): AuthThunkType => {
