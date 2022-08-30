@@ -22,9 +22,9 @@ type MapStatePropsType = {
     isAuth: boolean
 }
 
-const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
+const LoginForm: React.FC<InjectedFormProps<FormDataType>> = ({handleSubmit, error}) => {
     return (
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <div>
                 <Field placeholder={'Email'} name={'email'}
                        component={Input} validate={[required]}/>
@@ -37,8 +37,8 @@ const LoginForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
                 <Field type={'checkbox'} name={'rememberMe'}
                        component={Input} validate={[required]}/> remember me
             </div>
-            {props.error && <div className={style.formSampleError}>
-                {props.error}
+            {error && <div className={style.formSampleError}>
+                {error}
             </div>
             }
             <div>

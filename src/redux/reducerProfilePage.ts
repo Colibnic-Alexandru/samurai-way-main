@@ -99,32 +99,19 @@ const setStatus = (status: string) => {
 export type ThunkType = ThunkAction<void, AppStateType, unknown, ActionProfileType>
 export type ThunkDispatchType = ThunkDispatch<AppStateType, unknown, ActionProfileType>
 
-export const ThunkSetUserProfile = (userId: number): ThunkType => {
-    return (dispatch: ThunkDispatchType) => {
-        usersAPI.getProfile(userId)
-            .then(response => {
-                dispatch(setUserProfile(response.data));
-            })
-    }
+export const ThunkSetUserProfile = (userId: number): ThunkType => async (dispatch: ThunkDispatchType) => {
+    let response = await usersAPI.getProfile(userId)
+    dispatch(setUserProfile(response.data));
 }
 
-export const ThunkSetStatus = (status: string): ThunkType => {
-    return (dispatch: ThunkDispatchType) => {
-        profileAPI.getStatus(status)
-            .then(response => {
-                dispatch(setStatus(response.data));
-            })
-    }
+export const ThunkSetStatus = (status: string): ThunkType => async (dispatch: ThunkDispatchType) => {
+    let response = await profileAPI.getStatus(status)
+    dispatch(setStatus(response.data));
 }
 
-export const ThunkUpdateStatus = (status: string): ThunkType => {
-    return (dispatch: ThunkDispatchType) => {
-        console.log(status)
-        profileAPI.updateStatus(status)
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    dispatch(setStatus(status));
-                }
-            })
+export const ThunkUpdateStatus = (status: string): ThunkType => async (dispatch: ThunkDispatchType) => {
+    let response = await profileAPI.updateStatus(status)
+    if (response.data.resultCode === 0) {
+        dispatch(setStatus(status));
     }
 }
