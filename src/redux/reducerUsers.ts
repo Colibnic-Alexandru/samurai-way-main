@@ -27,15 +27,17 @@ export type InitialStateType = {
     currentPage: number,
     isFetching: boolean,
     followingInProgress: Array<number>
+    portionSize: number
 }
 
 const initialState: InitialStateType = {
     users: [],
-    pageSize: 10,
+    pageSize: 5,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: false,
-    followingInProgress: []
+    followingInProgress: [],
+    portionSize: 10
 }
 
 export const reducerUsers = (state: InitialStateType = initialState, action: ActionUsersType): InitialStateType => {

@@ -1,3 +1,26 @@
+.paginator {
+    display: flex;
+    margin: 5px;
+}
+
+.paginatorNumbers {
+    display: flex;
+    justify-content: space-around;
+    width: 500px;
+}
+
+.pageNumber {
+    font-size: 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    color: #000000;
+}
+
 .selectedPage {
     font-weight: bold;
+    color: #ffffff;
+}
+
+.button {
+    font-size: 20px;
 }
