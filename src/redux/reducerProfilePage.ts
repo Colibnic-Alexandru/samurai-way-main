@@ -8,7 +8,6 @@ export type PostsType = {
     likeCount: number
 }
 
-
 export type ProfilePageType = {
     userId: number
     lookingForAJob: boolean
@@ -30,6 +29,11 @@ export type ProfilePageType = {
     } | null
 }
 
+export type PhotosType = {
+    small: string
+    large: string
+}
+
 export type InitialStateType = typeof initialState
 
 const initialState = {
@@ -40,10 +44,9 @@ const initialState = {
         {id: 4, message: 'Hi hwo are you?', likeCount: 15},
         {id: 5, message: 'Hello', likeCount: 75},
     ] as Array<PostsType>,
-    profile: null as ProfilePageType | null,
-    status: "" as string,
+    profile: null as  ProfilePageType | null,
+    status: '',
 };
-
 
 export const profileReducer = (state: InitialStateType = initialState, action: ActionProfileType): InitialStateType => {
     switch (action.type) {
@@ -66,7 +69,13 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
             return {
                 ...state,
                 status: action.status
+            };
+        case "SAVE_PHOTO_SUCCESS": {
+            return {
+                ...state,
+                profile: {...state.profile!, photos: action.photos}
             }
+        }
         default:
             return state;
     }
@@ -75,6 +84,7 @@ export const profileReducer = (state: InitialStateType = initialState, action: A
 type ActionProfileType = ReturnType<typeof addPostAC>
     | ReturnType<typeof setUserProfile>
     | ReturnType<typeof setStatus>
+    | ReturnType<typeof savePhotoSuccess>
 
 export const addPostAC = (newPostText: string) => {
     return {
@@ -88,11 +98,16 @@ const setUserProfile = (profile: ProfilePageType) => {
         profile: profile
     } as const
 }
-
 const setStatus = (status: string) => {
     return {
         type: 'SET_STATUS',
         status: status
+    } as const
+}
+export const savePhotoSuccess = (photos: PhotosType) => {
+    return {
+        type: 'SAVE_PHOTO_SUCCESS',
+        photos: photos
     } as const
 }
 
@@ -113,5 +128,12 @@ export const ThunkUpdateStatus = (status: string): ThunkType => async (dispatch:
     let response = await profileAPI.updateStatus(status)
     if (response.data.resultCode === 0) {
         dispatch(setStatus(status));
+    }
+}
+
+export const savePhoto = (file: string): ThunkType => async (dispatch:ThunkDispatchType) => {
+    let response = await profileAPI.savePhoto(file)
+    if (response.data.resultCode === 0) {
+        dispatch(savePhotoSuccess(response.data.data.photos))
     }
 }
