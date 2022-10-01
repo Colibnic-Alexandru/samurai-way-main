@@ -24,13 +24,13 @@ export const User: React.FC<PropsType> = ({user, followingInProgress, follow, un
                     <div>
                         {user.followed
                             ?
-                            <button
+                            <button key={user.id}
                                 disabled={followingInProgress
                                     .some(id => id === user.id)} onClick={() => {
                                 unfollow(user.id)
                             }}>Unfollow</button>
                             :
-                            <button
+                            <button key={user.id}
                                 disabled={followingInProgress.some(id => id === user.id)} onClick={() => {
                                 follow(user.id)
                             }}>Follow

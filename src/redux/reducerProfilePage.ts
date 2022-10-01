@@ -7,31 +7,30 @@ export type PostsType = {
     message: string
     likeCount: number
 }
-
 export type ProfilePageType = {
-    userId: number
+    aboutMe: string
+    contacts: ContactsType
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
-    contacts: {
-        github: string
-        vk: string
-        facebook: string
-        instagram: string
-        twitter: string
-        website: string
-        youtube: string
-        mainLink: string
-    }
-    photos: {
-        small: string
-        large: string
-    } | null
+    userId: number
+    photos: PhotosType
 }
 
 export type PhotosType = {
     small: string
     large: string
+}
+
+export type ContactsType = {
+    facebook: string
+    website: string
+    vk: string
+    twitter: string
+    instagram: string
+    youtube: string
+    github: string
+    mainLink: string
 }
 
 export type InitialStateType = typeof initialState
@@ -92,7 +91,7 @@ export const addPostAC = (newPostText: string) => {
         messagesText: newPostText,
     } as const
 }
-const setUserProfile = (profile: ProfilePageType) => {
+const setUserProfile = (profile: ProfilePageType | null) => {
     return {
         type: 'SET_USER_PROFILE',
         profile: profile
@@ -114,7 +113,7 @@ export const savePhotoSuccess = (photos: PhotosType) => {
 export type ThunkType = ThunkAction<void, AppStateType, unknown, ActionProfileType>
 export type ThunkDispatchType = ThunkDispatch<AppStateType, unknown, ActionProfileType>
 
-export const ThunkSetUserProfile = (userId: number): ThunkType => async (dispatch: ThunkDispatchType) => {
+export const ThunkSetUserProfile = (userId: number | null): ThunkType => async (dispatch: ThunkDispatchType) => {
     let response = await usersAPI.getProfile(userId)
     dispatch(setUserProfile(response.data));
 }
@@ -135,5 +134,17 @@ export const savePhoto = (file: string): ThunkType => async (dispatch:ThunkDispa
     let response = await profileAPI.savePhoto(file)
     if (response.data.resultCode === 0) {
         dispatch(savePhotoSuccess(response.data.data.photos))
+    }
+}
+
+
+export const saveProfile = (profile: ProfilePageType | null): ThunkType => async (dispatch, getState) => {
+    const response = await profileAPI.saveProfile(profile)
+    if (response.data.resultCode === 0) {
+        dispatch(ThunkSetUserProfile(getState().auth.userId))
+    } else {
+        // @ts-ignore
+        dispatch(stopSubmit("edit-profile", {_error: response.data.messages[0]}));
+        return Promise.reject(response.data.messages[0]);
     }
 }

@@ -28,6 +28,7 @@ export const Users = (props: PropsType) => {
             />
             {
                 props.users.map(u => <User user={u}
+                                           key={u.id}
                                            follow={props.followThunkCreator}
                                            unfollow={props.unfollowThunkCreator}
                                            followingInProgress={props.followingInProgress}

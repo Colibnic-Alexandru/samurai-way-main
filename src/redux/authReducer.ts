@@ -12,6 +12,7 @@ export type InitialStateType = {
     resultCode: number
     messages: Array<string>
     isAuth: boolean
+    userId: number | null
 }
 
 const initialState: InitialStateType = {
@@ -22,7 +23,8 @@ const initialState: InitialStateType = {
     },
     resultCode: 0,
     messages: [],
-    isAuth: false
+    isAuth: false,
+    userId: null
 }
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionUsersType): InitialStateType => {

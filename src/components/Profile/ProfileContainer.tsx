@@ -4,7 +4,7 @@ import {Profile} from "./Profile";
 import {connect} from "react-redux";
 import {
     ProfilePageType,
-    savePhoto,
+    savePhoto, saveProfile,
     ThunkSetStatus,
     ThunkSetUserProfile,
     ThunkUpdateStatus
@@ -31,6 +31,7 @@ type MapDispatchPropsType = {
     ThunkSetStatus: (userId: number) => void
     ThunkUpdateStatus: (status: string) => void
     savePhoto: (file: string) => void
+    saveProfile: (profile: ProfilePageType | null) => void
 }
 
 type PropsType = RouteComponentProps<PathParamsType> & OwnPropsType
@@ -70,6 +71,7 @@ class ProfileContainer extends React.Component<PropsType> {
                     status={this.props.status}
                     updateStatus={this.props.ThunkUpdateStatus}
                     savePhoto={this.props.savePhoto}
+                    saveProfile={this.props.saveProfile}
                 />
             </div>
         );
@@ -89,7 +91,8 @@ export default compose<ComponentType>(
         ThunkSetUserProfile,
         ThunkSetStatus,
         ThunkUpdateStatus,
-        savePhoto
+        savePhoto,
+        saveProfile
     }),
     withRouter,
     withAuthRedirect

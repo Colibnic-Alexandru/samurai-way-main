@@ -18,7 +18,7 @@ type FormDataType = {
 
 export const MyPosts = (props: MyPostsPropsType) => {
 
-    const postsElement = props.posts.map(p => <Post id={p.id} message={p.message} likeCount={p.likeCount}/>)
+    const postsElement = props.posts.map(p => <Post key={p.id} id={p.id} message={p.message} likeCount={p.likeCount}/>)
 
     const addFormPost = (formData: FormDataType) => {
         props.addPost(formData.newMessageText)
